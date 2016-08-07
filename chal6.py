@@ -11,7 +11,7 @@ def ham_distance(s1, s2):
     s1_bin = bin(int(binascii.hexlify(s1), 16))[2:]
     s2_bin = bin(int(binascii.hexlify(s2), 16))[2:]
 
-    #Now iterate over hex strings and find difference
+    #Now iterate over binary strings and find difference
     for f, b in itertools.izip(s1_bin, s2_bin):
         if f != b:
             ham += 1
@@ -36,13 +36,30 @@ def det_keysize(data):
     return distances
 
 def blockify(data, block_size):
+    #Left justify the data if block size doesn't match exactly.
     if (len(data) % block_size != 0):
         pad_len = int(len(data) + (block_size - (len(data) % block_size)))
         data = data.ljust(pad_len, '0')
     blocks = ["" for x in xrange(int(len(data)/block_size))]
     for index in xrange(len(data)):
-        blocks[index // block_size] += data[index]
+        blocks[index // block_size] += data[index].encode("hex")
     return blocks
 
-data = base64.standard_b64decode(open("6.txt").read())
-print(blockify(data, 2))
+def transpose_blocks(data, block_size):
+    #Divided by two to account for hex char length of 2
+    transposed = ["" for x in xrange(0, block_size)]
+    # For each block, grab 2 hex chars at a time
+    for block in data:
+        for index in xrange(0, len(block), 2):
+            transposed[int(index //2)] += block[index]
+            transposed[int(index //2)] += block[index+1]
+    return transposed
+
+
+
+data = (open("6.txt").read().rstrip('\n')).decode('base64')
+
+block_size = 3
+blocks = (transpose_blocks(blockify(data, block_size), block_size))
+for block in blocks:
+    print(mc_crypto.char_freq_hex(block))

@@ -13,7 +13,6 @@ def str_hexStr(data):
         retVal.append(chr(int(byte, 16)))
     return ''.join(retVal)
 
-
 #Converts a string into base-64
 def str_b64(data):
     return str_hexStr(data).encode("base-64")
@@ -89,6 +88,18 @@ def char_freq_hex(data):
         cur_str = xor_single_char_hex(data, char)
         cur_score = score_str(cur_str)
         cur_tup = (cur_str, cur_score)
+        scores.append(cur_tup)
+    scores.sort(key=lambda x: x[1])
+    return scores[0:3]
+
+# Xors the string specified (treated as a rep of hex) with all characters and returns the
+# character which most closely matched a frequency analysis.
+def char_freq_hex_key(data):
+    scores = []
+    for char in range(0, 255):
+        cur_str = xor_single_char_hex(data, char)
+        cur_score = score_str(cur_str)
+        cur_tup = (chr(char), cur_score)
         scores.append(cur_tup)
     scores.sort(key=lambda x: x[1])
     return scores[0]
