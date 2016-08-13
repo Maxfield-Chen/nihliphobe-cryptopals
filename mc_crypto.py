@@ -99,7 +99,7 @@ def char_freq_hex_key(data):
     for char in range(0, 255):
         cur_str = xor_single_char_hex(data, char)
         cur_score = score_str(cur_str)
-        cur_tup = (chr(char), cur_score)
+        cur_tup = (chr(char), round(cur_score, 1))
         scores.append(cur_tup)
     scores.sort(key=lambda x: x[1])
-    return scores[0]
+    return scores[0:3]

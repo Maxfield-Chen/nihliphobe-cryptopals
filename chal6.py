@@ -59,7 +59,8 @@ def transpose_blocks(data, block_size):
 
 data = (open("6.txt").read().rstrip('\n')).decode('base64')
 
-block_size = 3
+block_size = 15
 blocks = (transpose_blocks(blockify(data, block_size), block_size))
 for block in blocks:
-    print(mc_crypto.char_freq_hex(block))
+    print(mc_crypto.char_freq_hex_key(block))
+
