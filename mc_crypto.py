@@ -1,10 +1,3 @@
-# Assumes plaintext, xor's each byte with the modded position of the key.
-def rk_xor(data, key):
-    result = ""
-    for index in range(0, len(data)):
-        result += hex(ord(data[index]) ^ ord(key[index % len(key)]))[2:].zfill(2)
-    return result
-
 # Encode a string as hex bytewise.
 def str_hexStr(data):
     retVal = []
@@ -65,7 +58,7 @@ def score_str(data):
         act_freq_per[index] = (act_freq[index]/len(ldata)) * 100
         #print chr(index + 97), ", ", act_freq_per[index]
         score += abs(exp_freq_per[index] - act_freq_per[index])
-    score += bc * 10
+    score += bc * 5000
     return score
 
 # Xors the string specified with all characters and returns the 30 
@@ -75,10 +68,10 @@ def char_freq(data):
     for char in range(0, 255):
         cur_str = xor_single_char(data, char)
         cur_score = score_str(cur_str)
-        cur_tup = (cur_str, cur_score)
+        cur_tup = (chr(char), cur_str[:6], cur_score)
         scores.append(cur_tup)
-    scores.sort(key=lambda x: x[1])
-    return scores[0]
+    scores.sort(key=lambda x: x[2])
+    return scores[:30]
 
 # Xors the string specified (treated as a rep of hex) with all characters and returns the 30 
 # strings whose character frequency are closest to expected.
@@ -90,7 +83,7 @@ def char_freq_hex(data):
         cur_tup = (cur_str, cur_score)
         scores.append(cur_tup)
     scores.sort(key=lambda x: x[1])
-    return scores[0:3]
+    return scores
 
 # Xors the string specified (treated as a rep of hex) with all characters and returns the
 # character which most closely matched a frequency analysis.
@@ -102,4 +95,4 @@ def char_freq_hex_key(data):
         cur_tup = (chr(char), round(cur_score, 1))
         scores.append(cur_tup)
     scores.sort(key=lambda x: x[1])
-    return scores[0:3]
+    return scores[:3]

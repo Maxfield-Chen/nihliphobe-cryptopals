@@ -1,10 +1,11 @@
 import mc_crypto
 
-data = [line.rstrip('\n') for line in open('./4.txt')]
+data = "CLGSJULHJQKELK:UHWFOHTH"
+data = data.encode("hex")
+print data
 
-scores = []
-for line in data:
-    scores.append(mc_crypto.char_freq_hex(line))
-scores.sort(key=lambda x: x[1])
-for sc in scores[:10]:
-    print sc[1], ": ", sc[0]
+data1 = "ELK: U HWFO HTH"
+
+scores = mc_crypto.char_freq_hex(data)
+for score in scores:
+    print score

@@ -24,6 +24,8 @@ def score_str(data):
         index = ord(letter) - 97
         if index > 0 and index < 26:
             act_freq[index] += 1
+        else:
+            score += 5
 
     for index in range(0, 25):
         act_freq_per[index] = (act_freq[index]/len(ldata)) * 100
@@ -47,10 +49,10 @@ def char_freq_hex(data):
     for char in range(0, 255):
         cur_str = xor_single_char_hex(data, char)
         cur_score = score_str(cur_str)
-        cur_tup = (cur_str, cur_score)
+        cur_tup = (cur_str, cur_score, chr(char))
         scores.append(cur_tup)
     scores.sort(key = lambda x: x[1])
     for sc in scores[:30]:
-        print sc[1], ": ",sc[0]
+        print sc[2],":", sc[1], ": ",sc[0]
 
 char_freq_hex("1b37373331363f78151b7f2b783431333d78397828372d363c78373e783a393b3736")
