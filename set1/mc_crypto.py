@@ -1,3 +1,17 @@
+from Crypto.Cipher import AES
+
+def decrypt_ecb(key, data, IV):
+    data = (data).decode("base64")
+    mode = AES.MODE_ECB
+    crypt = AES.new(key, mode, IV=IV)
+    return crypt.decrypt(data)
+
+def encrypt_ecb(key, data, IV):
+    data = (data).decode("base64")
+    mode = AES.MODE_ECB
+    crypt = AES.new(key, mode, IV=IV)
+    return crypt.encrypt(data)
+
 # Encode a string as hex bytewise.
 def str_hexStr(data):
     retVal = []
